@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  mongo:
+    build: .
+    ports:
+      - $PORT:27017
+    volumes:
+      - $MONGODB_VOLUME_PATH:/data/db
+    environment:
+      - ROOT_USERNAME=$ROOT_USERNAME
+      - ROOT_PASSWORD=$ROOT_PASSWORD
