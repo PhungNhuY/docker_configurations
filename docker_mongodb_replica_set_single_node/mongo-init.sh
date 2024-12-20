@@ -1,11 +1,16 @@
-# init replication
-# create admin user 
-mongosh <<EOF
-rs.initiate()
-use admin
-db.createUser({
-  user: process.env.ROOT_USERNAME,
-  pwd: process.env.ROOT_PASSWORD,
-  roles: [ { role: "root", db: "admin" } ]
-})
+#!/bin/bash
+echo "----------------------------------------"
+echo "------Initializing the replica set------"
+echo "----------------------------------------"
+mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD <<EOF
+rs.initiate({
+  "_id": "rs0",
+  "members": [
+    {
+      "_id": 0,
+      "host": "localhost:27017"
+    }
+  ]
+});
+rs.status();
 EOF

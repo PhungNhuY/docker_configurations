@@ -1,12 +1,17 @@
-version: '3.8'
-
 services:
   mongo:
     build: .
+    restart: unless-stopped
     ports:
       - $PORT:27017
     volumes:
       - $MONGODB_VOLUME_PATH:/data/db
     environment:
-      - ROOT_USERNAME=$ROOT_USERNAME
-      - ROOT_PASSWORD=$ROOT_PASSWORD
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+    healthcheck:
+      test: /docker-entrypoint-initdb.d/mongo-init.sh
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
